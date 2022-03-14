@@ -11,9 +11,10 @@ from datetime import datetime, timezone
 import altair as alt
 import time
 from PIL import Image
-import app1
+import coffee_flow_rate_doc
 import coffee
 import art
+import coffee_flow_rate_doc
 # import TeachableMachine as tm
 
 
@@ -28,7 +29,16 @@ def main():
     
 
     if menu == 'Coffee':
+        
         coffee.app()
+        if st.button("show documentation", key="coffeeDoc"):
+            with st.container():
+                coffee_flow_rate_doc.app('style.css')
+            
+    
+
+    
+
         
     
     if menu == 'Art':
@@ -37,17 +47,6 @@ def main():
 
     if menu == 'Secret':
         pass
-    
-    
-
-        
-
-   
-
-
-# str(datetime.timedelta(seconds=duration))
-    
-    
     
 
 if __name__ == "__main__":
