@@ -1,4 +1,5 @@
 # from tkinter import Image
+from operator import length_hint
 import streamlit as st
 import requests
 from streamlit_lottie import st_lottie
@@ -11,7 +12,7 @@ from datetime import datetime, timezone
 import altair as alt
 import time
 from PIL import Image
-import TeachableMachine as tm
+# import TeachableMachine as tm
 
 
 
@@ -40,14 +41,17 @@ def main():
         print(ref)
         my_dict = ref.get()
         coffee_number = list(my_dict.keys())
-        coffee_number1 =[]
+        coffee_number_last5 =[]
         print(coffee_number)
 
         for i in range(len(coffee_number)):
-            print(coffee_number[i])
-            coffee_number1.append(datetime.utcfromtimestamp(int(coffee_number[i])))
+            if i >len(coffee_number)-5:
+                print(coffee_number[i])
+                coffee_number_last5.append(datetime.utcfromtimestamp(int(coffee_number[i])))
 
-        selected_coffee = st.sidebar.selectbox('Select Coffee',coffee_number1)
+        
+
+        selected_coffee = st.sidebar.selectbox('Select Coffee',coffee_number_last5)
         if selected_coffee is not None:
             selected_coffee = int(selected_coffee.replace(tzinfo=timezone.utc).timestamp())
             last_coffee = my_dict[f'{selected_coffee}']
