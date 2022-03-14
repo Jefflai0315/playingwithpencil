@@ -11,12 +11,15 @@ from datetime import datetime, timezone
 import altair as alt
 import time
 from PIL import Image
+import TeachableMachine as tm
+
 
 
 st.set_page_config(page_icon="✏️", page_title="pwp")
 
 lottie_art = requests.get('https://assets4.lottiefiles.com/private_files/lf30_hqhmdw8f.json').json()
 lottie_coffee = requests.get('https://assets9.lottiefiles.com/packages/lf20_urr8jb9p.json').json()
+# model, live, data, size = tm.init_face_reg()
 
 def main():
     
@@ -50,16 +53,21 @@ def main():
             last_coffee = my_dict[f'{selected_coffee}']
             df = pd.DataFrame(list(last_coffee.items()),columns = ['Time','Weight']) 
             first_time = float(df['Time'][0])
-            df['Time'] = df['Time'].apply(lambda x: int(x)-first_time )
+            df['Time'] = df['Time'].apply(lambda x: float(x)-first_time )
+            df['Weight'] = df['Weight'].apply(lambda x: float(x) )
+            df['Different per second'] =  df['Weight'].diff(periods=1)
+            df['Flow rate'] = df['Different per second'].rolling(3).mean()
+            print(df['Flow rate'])
             df.set_index('Time', inplace = True)
             ts = int(first_time)
             curr_date=datetime.utcfromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
 
-            # print(df)
-            # st.line_chart(df,use_container_width=True)
+            
             chart = df.reset_index()
             # print(chart)
-            c = alt.Chart(chart).mark_line().encode(alt.Y('Weight:Q',scale=alt.Scale(domain=(0, 40),clamp=True)), x='Time')
+            a = alt.Chart(chart).mark_line().encode(alt.Y('Weight:Q',axis=alt.Axis(title='Weight (grams)', titleColor='#5276A7'),scale=alt.Scale(domain=(0, 40),clamp=True)), x='Time')
+            b = alt.Chart(chart).mark_line(color='#57A44C').encode(alt.Y('Flow rate:Q',axis=alt.Axis(title='Flow rate (gram/second)', titleColor='#57A44C'),scale=alt.Scale(domain=(0, 5),clamp=True)), x='Time')
+            c = alt.layer(a,b).resolve_scale(y ='independent')
             st.altair_chart(c, use_container_width=True)
 
             with st.expander('see my coffee flow rate data'):
@@ -75,7 +83,7 @@ def main():
             if 'on_state' not in st.session_state:
                 on_state = "1"
             else:
-                on_state = st.session_state.on_state
+                on_state = ref.child('on_state').get()
 
             
             # print('on state',on_state)
@@ -89,6 +97,7 @@ def main():
                     with st.spinner('Turning off...'):
                         time.sleep(0.3)
                         st.experimental_rerun()
+                        
                 else:
                     ref.update({"on_state" : "1"})
                     st.session_state.on_state = "1"
@@ -96,6 +105,10 @@ def main():
                     with st.spinner('Turning on...'):
                         time.sleep(0.3)
                         st.experimental_rerun()
+        
+
+    
+                    
         
         
 
@@ -121,7 +134,11 @@ def main():
         st.image(image3,caption='Dahyun',width=600)
 
     if menu == 'Secret':
-        pass
+        result = tm.capture_face()
+        if result == True:
+            st.title('Hello jeff')
+    
+    
 
         
 
