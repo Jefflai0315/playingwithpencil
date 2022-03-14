@@ -12,8 +12,13 @@ from datetime import datetime, timezone
 import altair as alt
 import time
 from PIL import Image
+import app1
 # import TeachableMachine as tm
 
+
+PAGES = {
+    "App1": app1,
+}
 
 
 st.set_page_config(page_icon="✏️", page_title="pwp")
@@ -109,6 +114,11 @@ def main():
                     with st.spinner('Turning on...'):
                         time.sleep(0.3)
                         st.experimental_rerun()
+
+        if st.button('Go to documentation'):
+            app1.app()
+
+        
         
 
     
