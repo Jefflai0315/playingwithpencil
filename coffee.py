@@ -1,4 +1,4 @@
-from turtle import delay
+
 import streamlit as st
 import requests
 from streamlit_lottie import st_lottie
@@ -8,7 +8,7 @@ from datetime import datetime, timezone
 import altair as alt
 import time
 from streamlit_autorefresh import st_autorefresh
-import coffee_flow_rate_doc
+
 
 lottie_coffee = requests.get('https://assets9.lottiefiles.com/packages/lf20_urr8jb9p.json').json()    
     
