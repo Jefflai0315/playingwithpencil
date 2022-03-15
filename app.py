@@ -33,14 +33,17 @@ def main():
             st.session_state[myKey] = False
 
         if st.session_state[myKey]:
-            myBtn = st.button('Back')
-            st.session_state[myKey] = False
+            if st.button('Back'):
+                st.session_state[myKey] = False
+                st.experimental_rerun()
             coffee_flow_rate_doc.app()
-            
+                
         else:
-            myBtn = st.button('Show Documentation')
-            st.session_state[myKey] = True
+            if st.button('Show Documentation'):
+                st.session_state[myKey] = True
+                st.experimental_rerun()
             coffee.app()
+        
         
     
 

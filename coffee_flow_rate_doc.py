@@ -4,7 +4,13 @@ from PIL import Image
 
 def app():
     st.subheader('Arduino MKR Wifi 1020 on Espresso Flow Profiling')
-    st.markdown('A good pull of espresso shot requires 3 things: coffee grind size,water to coffee ratio and time. Although the espresso machine I have at home can dispense a preset amount of water on every espresso pull, I cant trust the preset water dispense as they are many factor that will impact the flow rate (e.g. cofee grind size). ')
+
+    image0 = Image.open("assets/images/espresso_line_chart.png")
+    st.image(image0,caption='Sneak peak into the result 👀',width=400)
+
+    st.markdown('''A good pull of espresso shot requires 3 things: coffee grind size,water to coffee ratio and time.
+     Although the espresso machine I have at home can dispense a preset amount of water on every espresso pull, 
+     I cant trust the preset water dispense as they are many factor that will impact the flow rate (e.g. cofee grind size). ''')
     st.markdown('To tackle that, I used to dispense the water manually. That is to hold down the dispense button until reaching disired (espresso) weight.')
     st.markdown('While it is not very painful, I think it is worth the effort to use arduino to help me automate the process abit, so that I can save money from buying a premiere espresso machine that does the same thing.')
     st.markdown('My _**first goal**_  is to create a weighing scale to track my espresso dispensed while a servo motor holding down the dispensing button.')

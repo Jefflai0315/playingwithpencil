@@ -15,8 +15,7 @@ lottie_coffee = requests.get('https://assets9.lottiefiles.com/packages/lf20_urr8
 def app():    
     st_lottie(lottie_coffee, speed=1, height=400, key="Coffee")
     st.subheader('This is where we can talk about coffee!')
-    st.markdown('A flow chart of my espresso shot today, it is **_really_ cool**.')
-    st.markdown('It is linked to my [firebase](https://console.firebase.google.com/u/0/project/product-design-f47db/database/product-design-f47db-default-rtdb/data)')
+    st.markdown('A line chart of my espresso pull today, it is **_really_ cool**.')
     ref = db.reference("/data")
     my_dict = ref.get()
     coffee_number = list(my_dict.keys())
@@ -50,6 +49,9 @@ def app():
         c = alt.layer(a,b).resolve_scale(y ='independent')
         st.altair_chart(c, use_container_width=True)
 
+
+
+        st.markdown('It is linked to my [firebase](https://console.firebase.google.com/u/0/project/product-design-f47db/database/product-design-f47db-default-rtdb/data)')
         with st.expander('see my coffee flow rate data'):
             st.write(df)
 
