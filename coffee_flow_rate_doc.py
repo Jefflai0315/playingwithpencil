@@ -2,7 +2,7 @@ import streamlit as st
 from PIL import Image
 
 
-def app(css):
+def app():
     st.subheader('Arduino MKR Wifi 1020 on Espresso Flow Profiling')
     st.markdown('A good pull of espresso shot requires 3 things: coffee grind size,water to coffee ratio and time. Although the espresso machine I have at home can dispense a preset amount of water on every espresso pull, I cant trust the preset water dispense as they are many factor that will impact the flow rate (e.g. cofee grind size). ')
     st.markdown('To tackle that, I used to dispense the water manually. That is to hold down the dispense button until reaching disired (espresso) weight.')

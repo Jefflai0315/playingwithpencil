@@ -1,4 +1,4 @@
-# from tkinter import Image
+
 import streamlit as st
 import requests
 from streamlit_lottie import st_lottie
@@ -26,20 +26,25 @@ st.set_page_config(page_icon="✏️", page_title="pwp")
 def main():
     
     menu = st.sidebar.selectbox('Menu',['Art','Coffee','Secret'])
+
+    if menu == 'Coffee' :
+        myKey = 'my_key'
+        if myKey not in st.session_state:
+            st.session_state[myKey] = False
+
+        if st.session_state[myKey]:
+            myBtn = st.button('SHow documentation')
+            st.session_state[myKey] = False
+        else:
+            myBtn = st.button('Back')
+            st.session_state[myKey] = True
+        
     
 
-    if menu == 'Coffee':
-        
+    elif menu == 'Coffee':
         coffee.app()
-        if st.button("show documentation", key="coffeeDoc"):
-            with st.container():
-                coffee_flow_rate_doc.app('style.css')
-            
-    
-
-    
-
         
+   
     
     if menu == 'Art':
         art.app()
@@ -48,6 +53,8 @@ def main():
     if menu == 'Secret':
         pass
     
+
+        
 
 if __name__ == "__main__":
     if not firebase_admin._apps:

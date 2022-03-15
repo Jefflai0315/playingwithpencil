@@ -1,3 +1,4 @@
+from turtle import delay
 import streamlit as st
 import requests
 from streamlit_lottie import st_lottie
@@ -6,6 +7,8 @@ import pandas as pd
 from datetime import datetime, timezone
 import altair as alt
 import time
+from streamlit_autorefresh import st_autorefresh
+import coffee_flow_rate_doc
 
 lottie_coffee = requests.get('https://assets9.lottiefiles.com/packages/lf20_urr8jb9p.json').json()    
     
@@ -15,15 +18,12 @@ def app():
     st.markdown('A flow chart of my espresso shot today, it is **_really_ cool**.')
     st.markdown('It is linked to my [firebase](https://console.firebase.google.com/u/0/project/product-design-f47db/database/product-design-f47db-default-rtdb/data)')
     ref = db.reference("/data")
-    print(ref)
     my_dict = ref.get()
     coffee_number = list(my_dict.keys())
     coffee_number_last5 =[]
-    print(coffee_number)
 
     for i in range(len(coffee_number)):
         if i >len(coffee_number)-5:
-            print(coffee_number[i])
             coffee_number_last5.append(datetime.utcfromtimestamp(int(coffee_number[i])))
 
     
@@ -38,7 +38,6 @@ def app():
         df['Weight'] = df['Weight'].apply(lambda x: float(x) )
         df['Different per second'] =  df['Weight'].diff(periods=1)
         df['Flow rate'] = df['Different per second'].rolling(3).mean()
-        print(df['Flow rate'])
         df.set_index('Time', inplace = True)
         ts = int(first_time)
         curr_date=datetime.utcfromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
@@ -59,7 +58,7 @@ def app():
         ref = db.reference("/")
         coffee_dosage = ref.child('coffee_dosage').get()
         coffee_gram = st.text_input("How much coffee (grams)?",coffee_dosage)
-        print(ref.update({"coffee_dosage" : f'{coffee_gram}'}))
+        ref.update({"coffee_dosage" : f'{coffee_gram}'})
 
         if 'on_state' not in st.session_state:
             on_state = "1"
@@ -77,7 +76,6 @@ def app():
                 # print('if on state is true',st.session_state.on_state)
                 with st.spinner('Turning off...'):
                     time.sleep(0.3)
-                    st.experimental_rerun()
                     
             else:
                 ref.update({"on_state" : "1"})
@@ -85,4 +83,9 @@ def app():
                 # print('if on state is false',st.session_state.on_state)
                 with st.spinner('Turning on...'):
                     time.sleep(0.3)
-                    st.experimental_rerun()
+        count = st_autorefresh(interval=2000, limit=100, key="fizzbuzzcounter")
+        print(count)
+
+
+
+                   
