@@ -15,7 +15,7 @@ import coffee_flow_rate_doc
 import coffee
 import art
 import coffee_flow_rate_doc
-# import TeachableMachine as tm
+import tm
 
 
 
@@ -33,11 +33,14 @@ def main():
             st.session_state[myKey] = False
 
         if st.session_state[myKey]:
-            myBtn = st.button('SHow documentation')
-            st.session_state[myKey] = False
-        else:
             myBtn = st.button('Back')
+            st.session_state[myKey] = False
+            coffee_flow_rate_doc.app()
+            
+        else:
+            myBtn = st.button('Show Documentation')
             st.session_state[myKey] = True
+            coffee.app()
         
     
 
@@ -51,7 +54,11 @@ def main():
     
 
     if menu == 'Secret':
-        pass
+        result = tm.app()
+        if result ==0:
+            st.success("Welcome Jeff!")
+        else:
+            st.warning("You are not Jeff")
     
 
         
