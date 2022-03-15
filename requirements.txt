@@ -6,3 +6,5 @@ streamlit_autorefresh==0.0.1
 keras==2.8.0
 keras-models==0.0.7
 Keras-Preprocessing==1.1.2
+tensorflow==2.8.0
+tensorflow-io-gcs-filesystem==0.24.0
