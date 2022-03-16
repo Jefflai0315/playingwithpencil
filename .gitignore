@@ -1,6 +1,11 @@
 __pycache__/
 
-venv/
-venv
 
- requirem.txt
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
