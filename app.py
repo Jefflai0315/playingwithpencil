@@ -7,7 +7,7 @@ import coffee_flow_rate_doc
 import coffee
 import art
 import coffee_flow_rate_doc
-import tm
+# import tm  -- tm cant work now 
 
 
 
@@ -49,11 +49,12 @@ def main():
     
 
     if menu == 'Secret':
-        result = tm.app()
-        if result ==0:
-            st.success("Welcome Jeff!")
-        else:
-            st.warning("You are not Jeff")
+        # result = tm.app()
+        # if result ==0:
+        #     st.success("Welcome Jeff!")
+        # else:
+        #     st.warning("You are not Jeff")
+        st.info('feature on the way!')
     
 
         
