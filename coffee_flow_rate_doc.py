@@ -1,23 +1,24 @@
 import streamlit as st
 from PIL import Image
+from assets import code_text
 
 
 def app():
-    st.subheader('Arduino MKR Wifi 1020 on Espresso Flow Profiling')
-
+    st.header('Espresso Flow Profiling with Arduino MKR WIFI 1010 ☕')
+    st.markdown('**This tutorial will illustrate the working of an loadcell and servo, as well as remotely controlling servo visuallising data via Streamlit.**')
+    col1,col2 = st.columns([3,1])
+    
     image0 = Image.open("assets/images/espresso_line_chart.png")
-    st.image(image0,caption='Sneak peak into the result 👀',width=400)
+    image00 = Image.open("assets/images/coffee.jpg")
+    with col1:
+      st.image(image0,caption='Sneak peak into the result 👀',width=500)
+    with col2:
+      st.image(image00,caption='Making espresso',width=135)
+    st.markdown('''---''')
 
-    st.markdown('''A good pull of espresso shot requires 3 things: coffee grind size,water to coffee ratio and time.
-     Although the espresso machine I have at home can dispense a preset amount of water on every espresso pull, 
-     I cant trust the preset water dispense as they are many factor that will impact the flow rate (e.g. cofee grind size). ''')
-    st.markdown('To tackle that, I used to dispense the water manually. That is to hold down the dispense button until reaching disired (espresso) weight.')
-    st.markdown('While it is not very painful, I think it is worth the effort to use arduino to help me automate the process abit, so that I can save money from buying a premiere espresso machine that does the same thing.')
-    st.markdown('My _**first goal**_  is to create a weighing scale to track my espresso dispensed while a servo motor holding down the dispensing button.')
-
-
+    st.header('Things used in this project')
     st.markdown("""
-    ### Components:
+    ##### Hardward Components:
     
     - Arduino MKR Wifi 1020
     - Loadcell
@@ -28,240 +29,174 @@ def app():
     - (laser cut) Weighing platform
     - Bolts and screws
     - Resistors
-    - Wires""")
+    - Jumper wires""")
+    st.markdown('''---''')
+
+    st.header('Story')
+    st.markdown('**What is espresso flow profilling and why does it matters?**')
+
+    st.markdown(''' “Flow profiling” is about controling the flow rate of water going through the machine’s boiler and the puck of coffee.
+     The quality of an espresso shot depends on 3 things: coffee grind size, water to coffee ratio and time.
+     Although the espresso machine I have at home can dispense water for a preset amount of time, 
+     I wouldn't trust the dispensing as every pull of espresso can **never be the same**.  (e.g. different coffee with same grind size setting and same amount of coffee can take different time to get the correct coffee to water ratio ). ''')
+    
+    st.markdown('To tackle that, I used to dispense the water manually. That is to hold down the dispense button until reaching disired (espresso) weight.')
+    st.markdown('It is a **pain point** as I am not being able to focus on studying the coffee flow profiling. Hence I think it is worth the effort to use microcontroller to help me automate the process abit, so that I can save money from buying a premiere espresso machine that does the same thing.')
+    st.markdown('My _**first goal**_ 🏁  is to hire a mechanism that help me hold down the button until a desired weight is obtained. This mechanism requires 3 things:')
+    
+    st.markdown(">>1. **Servo motor** secured right above the dispensing button that will hold down the button by instructing servo to turn 90 degree anticlockwise ")
+    st.markdown(">> 2. **Load cell and HX711** that actively tracks the weight of the espresso liquid dispensed. Once reached desired weight, it will instruct servo to return to original position")
+    st.markdown(">> 3. **LEDs**. green led to show servo is holding down the button, while red led to show it returns to its original position")
+    
+    col3,col4,col5 = st.columns(3)
+    with col3:
+      image1 = Image.open("assets/images/servo.jpg")
+      st.image(image1,caption='1. my_servo.write(160)',width=200)
+
+    with col4:
+      image2= Image.open("assets/images/loadcell.jpg")
+      st.image(image2,caption='2. loadcell on weighting platform',width=200)
+
+    with col5:
+      image3= Image.open("assets/images/led.jpg")
+      st.image(image3,caption='3. visual cues',width=200)
+
+    st.markdown('My _**second goal**_ 🏁 is to use Streamlit to display my espresso flow profilling data **and** control the state of my servo. If the state is "on", weight data will be send to firebase, else it will be stuck in a loop (can see my code)''')
+    st.markdown("_Press 'Back button' at the top of the page to see the data visualisation. you can also watch the video at the end to see how it works!_")
+    st.markdown("""---""")
+
+    st.markdown("""## Step 1: Setup the Hardware""")
+    
+    image4 = Image.open("assets/images/arduino_coffee_weighing_flowrate_project.png")
+    st.image(image4,caption="Schematic diagram",width=600)
+
+    col6,col7 = st.columns(2)
+
+    with col6:
+      st.markdown('''
+      ##### PinWiring to Arduino MKR WIFI 1010
+
+      DT--------------------------Digital 10
+
+      SCK------------------------Digital 11
+
+      G LED---------------------Digital 4
+
+      R LED---------------------Digital 5
+
+      SERVO--------------------Digital 9
+
+      GND-----------------------GND
+
+      VCC------------------------5V ''')
+      
+    with col7:
+      st.markdown('''
+      ##### PinWiring to HX711 
+
+      RED-------------------------E+
+
+      BLACK----------------------E-
+
+      GREEN----------------------A+
+
+      WHITE----------------------A-
+
+      ''')
+
+    st.markdown("**Reminder:** Don't forget the resistors!")
+
+    st.markdown('''---''')
+
+
+    st.subheader("Step 2: Before the code")
+    st.markdown('''
+    ##### Include these
+    - **<HX711.h>** library for HX711 that amplifies signals from cells and reporting them to another microcontroller
+    - **<WiFiNINA.h>** enables network connection (local and Internet) with the Arduino MKR WiFi 1010
+    - **<Servo.h>** library which comes with the Arduino IDE
+    - **"Firebase_Arduino_WiFiNINA.h"** which is a Google Firebase Realtime Database Arduino Client Library for Arduino MKR WiFi 1010
+    - **"arduino_secrets.h"** is where you keep the confidentials safely and excluding them from the main sketch file ''')
+    
+    st.markdown("""**Note:** If library not pre-install, you can search it under Tool > Manage libraries > _search for the library_""")
 
     st.markdown("""
-    ### Advantages:
+    **Important:** In order to send and receive data from a database in real-time in Firebase, we have to setup our firebase first.
     
-    1.
-    2.
-    3.
-    """)
+    Follow this tutorial to [setup your Firebase and connect to Arduino MKR WIFI 1010](https://create.arduino.cc/projecthub/OscarF10/mkr-wifi-1010-firebase-9a7399)""")
+    st.markdown('''---''')
 
-    st.markdown("""
-    ### Disadvantages:
+
+    st.subheader("Step 3: Ready for the code!")
+    st.markdown('I have broken down my code into sections for easy reference.')
     
-    1.
-    2.
-    3.
-    """)
+    code1,code2,code3,code4,code_arduino = code_text.app()
 
-
-
-
-    image1 = Image.open("assets/images/arduino_coffee_weighing_flowrate_project.png")
-    st.image(image1,caption='Schematic diagram',width=400)
-
-    code1 = """include <WiFiNINA.h>
-#include "arduino_secrets.h"            //contains wifi credentials
-#include "Firebase_Arduino_WiFiNINA.h"  //Firebase Arduino based on WiFiNINA-install from manage libraries
-#include <HX711.h>                      // Loadcell amplifier library
-#include <Servo.h>                     
-
-#define FIREBASE_HOST "product-design-f47db-default-rtdb.asia-southeast1.firebasedatabase.app"  //Firebase Realtime database URL
-#define FIREBASE_AUTH "38Acl7WfCZmDatBj329ccaRaZEZToxUI7dZ1w39r" //from Firebase Database secrets
-#define LED_RED 4   //display during off_state
-#define LED_GREEN 5 // display during on_state
-
-
-//-----------------------------1. Create servo and loadcell objects-----------------------------------------
-
-Servo myservo; 
-int pos = 0;    // variable to store the servo position
-
-HX711 loadcell;
-const int LOADCELL_DOUT_PIN = 10; // HX711 circuit wiring
-const int LOADCELL_SCK_PIN = 11;  // HX711 circuit wiring
-float calibration_factor =  -695.82; //adjustment setting for loadcell
-float w = 0; // weight calculation
-String w_string = " "; //string version to be uploaded to firebase ( standardise data type since interacting with Streamlit)
-
-
-
-//-----------------------------2. Sensitive data in the Secret tab/arduino_secrets.h--------------------------
-
-char ssid[] = SECRET_SSID;        // your network SSID (name)
-char pass[] = SECRET_PASS;    // your network password (use for WPA, or use as key for WEP)
-int status = WL_IDLE_STATUS;     // the Wifi radio's status
-
-
-
-//-----------------------------3. Define Firebase data object--------------------------------------------------
-
-FirebaseData firebaseData;
-String path = "/data"; 
-String timestamp;
-String Init_timestamp; // to group data for a single cup of espresso flow
-int target; // to store require coffee_dosage gotten from firebase
-String on_state = "1"; // it means machine is ready to dispense, "0" means off state
-
-
-"""
-    with st.expander("Define code"):
+    with st.expander("Include libraries and define variables"):
         st.code(code1, "C") 
 
-    code2 = """//////////////////////////////////////////////////~~~~~SETUP CODE~~~~~//////////////////////////////////////////////////
-
-void setup() {
-  Serial.begin(9600);
-
-  // attempt to connect to Wifi network:
-  while (status != WL_CONNECTED) {
-    Serial.print("Attempting to connect to network: ");
-    Serial.println(ssid);
-    // Connect to WPA/WPA2 network:
-    status = WiFi.begin(ssid, pass);
-
-    // wait 10 seconds for connection:
-    delay(10000);
-  }
-
-  Serial.print("SSID: ");
-  Serial.println(WiFi.SSID());
-  // you're connected now, so print out the data:
-  Serial.println("You're connected to the network!");
- 
-  Serial.println("----------------------------------------");
-
-  Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH, SECRET_SSID, SECRET_PASS);
-  Firebase.reconnectWiFi(true); //Let's say that if the connection is down, try to reconnect automatically
-
-
-  // getting data from firebase
-  Firebase.getString(firebaseData, "/coffee_dosage");
-  Serial.println("Value: " + firebaseData.stringData());
-  target = firebaseData.stringData().toInt();
-  Serial.print("Required Coffee in grams: ");
-  Serial.print(target);
-  Serial.println("----------------------------------------");
-
-  
-
-  //-------------------------- SETUP LOADCELL, SERVO AND LED CUE -----------------------------
-  
-  loadcell.begin(LOADCELL_DOUT_PIN, LOADCELL_SCK_PIN);
-  loadcell.set_scale(calibration_factor);
-  loadcell.tare();
-  myservo.attach(9);
-  myservo.write(90); 
-  delay(500);
-  myservo.write(80);
-  delay(500);
-  pinMode(LED_GREEN, OUTPUT);
-  pinMode(LED_RED, OUTPUT);
-  
-  check_state(); // function define below
-
-}"""
-    with st.expander("Setup code",expanded=True):
+    with st.expander("Setup code"):
         st.code(code2,"C")
 
-    code3 = """//////////////////////////////////////////////////~~~~~LOOP~~~~~//////////////////////////////////////////////////
-
-void loop() {
-
-  Firebase.getString(firebaseData, "/on_state");
-  if (firebaseData.stringData()== "0"){
-    check_state();
-  }
-  
-  timestamp = String(WiFi.getTime());
-  Serial.print("Time: ");
-  Serial.println(timestamp);
-  w = loadcell.get_units(5) ;
-  Serial.print("Weight: ");
-  Serial.println(w);
-  w_string = String(w);
-
-
-  if (w<=0){
-    w = loadcell.get_units(5);
-    Serial.println("Weight: 0");
-  }
-
-  // upload data to firebase
-  if (Firebase.setString(firebaseData, path + "/" + Init_timestamp  + "/" + timestamp , w_string) ) {
-    Serial.println("Wrote to database");  
-  } else {
-    Serial.println(firebaseData.errorReason());
-  }
- 
-  Serial.println("----------------------------------------");
-
-  // stop 4 grams before desired weight ( as pressure from the espresso machine will force the remaining liquid out from the coffee puck)
-  if (w> target - 4 ) {
-    myservo.write(90);
-    digitalWrite(LED_GREEN, LOW);
-    digitalWrite(LED_RED, HIGH);
-    while (w> target - 4 ){
-      timestamp = String(WiFi.getTime());
-      w_string = String(w);
-      (Firebase.setString(firebaseData, path + "/" + Init_timestamp  + "/" + timestamp , w_string) );
-      Serial.println("Wrote to database");  
-      delay(2000); //slow down data collection
-      w = loadcell.get_units(5) ;
-    } // change the state of the machine to "0" once cup is removed.
-    Firebase.setString(firebaseData, "/on_state" , "0"); 
-    Firebase.getString(firebaseData, "/on_state");
-    Serial.print("Firebase on_state: ");
-    Serial.println(firebaseData.stringData());
-  }
-}
-
-
-"""
-    with st.expander("Loop",expanded=True):
+    with st.expander("Loop"):
         st.code(code3,"C")
 
-    code4 = """void check_state(){
-  Firebase.getString(firebaseData, "/on_state"); // check the on_state from firebase
-  Serial.print("Firebase on_state: ");
-  Serial.println(firebaseData.stringData());
-  on_state = firebaseData.stringData();
-  if (on_state== "0"){
-    myservo.write(90);
-    digitalWrite(LED_GREEN, LOW);
-    digitalWrite(LED_RED, HIGH);
-    while (on_state !="1") {
-      Firebase.getString(firebaseData, "/on_state");
-      Serial.print("Firebase on_state: ");
-      Serial.println(firebaseData.stringData());
-      delay(500);
-      on_state = firebaseData.stringData();
-    };
-
-  //--------------------- RESETING REQUIREMENT AND SCALE ---------------------
-  
-  Firebase.getString(firebaseData, "/coffee_dosage");
-  Serial.println("Value: " + firebaseData.stringData());
-  target = firebaseData.stringData().toInt();
-  Serial.print("Required Coffee in grams: ");
-  Serial.println(target);
-
-  loadcell.set_scale(calibration_factor);
-  loadcell.tare();
-  pinMode(LED_GREEN, OUTPUT);
-  digitalWrite(LED_GREEN, HIGH);
-  pinMode(LED_RED, OUTPUT);
-  digitalWrite(LED_RED, LOW);
-  
-
-  //-------------------------- START MEASUREMENT OF FLOW -----------------------------
-  
-  myservo.write(160);
-  Serial.println("Initially weight: ");
-  Serial.println(loadcell.get_units(5));
-  Init_timestamp = String(WiFi.getTime());
-  Serial.println("------------------------------------------------------------------------------------");
-  Serial.println("Uploading value to firebase");
-  }
-}"""
-    with st.expander("check_status function"):
+    with st.expander("check_status() function"):
         st.code(code4,"C")
 
-    st.markdown('Full code can be found [Here](http://www.google.com)!')
+    st.markdown('The Full code can be found on my [github repository](http://www.google.com) or Download by clicking the button!')
+    with open('assets\coffee_flow_ratetest.ino', 'rb') as f:
+      st.download_button('Download Arduino code', f, file_name='coffee_flowrate.ino')
+
+    st.markdown('**Additional:** You will also need to calibrate the loadcell/HX711. Just download the file below, upload to your arduino, open up the serial monitor and follow the steps.')
+    with open('assets\HX711_Calibration_no_eeprom.ino', 'rb') as f:
+      st.download_button('Download Calibration code', f, file_name='HX711_Calibration_no-_eeprom.ino')
+
+    st.markdown('''---''')
+    st.subheader('Last but not least: Demonstration')
+    video_file = open('assets\images\coffee_flowrate.mp4', 'rb')
+    video_bytes = video_file.read()
+
+    st.video(video_bytes)
+    st.markdown('''
+    ##### Video description
+    - changing desired weight value in grams
+    - turning on and off button from Streamlit to control servo remotely
+    - watching loadcell read weight data and sending to firebase
+    - when desired weight is obtained, firebase continue to receive data as the state is still "on"
+    - once the cup is removed ( weight drastically reduced), the state becomes "off" and no data is send to firebase
+
+    ##### What is not shown
+    - implementation of Streamlit code
+    - deployment of Streamlit app on Heroku
+    - how to visuallise my firebase espresso flow profilling data on Steamlit (Just press the Back button on top to see!)
+     ''')
+
+    st.markdown('''
+    Streamlit is itself a vast topic to cover, but I can share with some of the resources that are related.
+    >>[my github repository of Steamlit code](https://github.com/Jefflai0315/playingwithpencil)
+
+    >>[deploy Streamlit to Heroku](https://medium.com/analytics-vidhya/how-to-deploy-a-streamlit-app-with-heroku-5f76a809ec2e)
+    ''')
+
+
+    st.markdown('''---''')
+    st.subheader('Finally: Conclusion')
+    st.markdown("""
+    ##### Advantages:
     
-    # with open(css) as f:
-    #     st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
-    # button_clicked = st.button("OK")
+    1. I no longer need to hold down the dispensing button. And enjoy watching the thick espresso pull out of the portafiler!
+    2. I am able to study the flow profilling data collected, so that I can alter the grind size of my newly bought coffee beans.
+    3. Show that I can make simple modifications to my espresso machine to save some bucks for upgrading my machine :D
+    """)
+
+    st.markdown("""
+    ##### Restropective:
     
+    1. Since the button is only found on my Streamlit app now, it can be incovinient if I do now have any devices with me. It will be good if I can have a physical button beside the machine to change the state of the machine.
+    2. The electrical components and wirings are exposed and placed close to a liquid dispenser's boiler. I will need to alter the length of the wires such that I can keep the electrical components away/ at the side or top of the espresso machine. It will be nice if i can compact all the part into a small module.
+    3. the servo arm is not ideal to ensure proper contact with the button. Besides, the current rotating angle / servo position should be reconsider as the motion is promp to misalignment.
+    """)
+
+
+    st.markdown('_credit: for dear TA for helping me to resolve the error in the HX711_calibration_no_eeprom file_')

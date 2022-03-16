@@ -1,22 +1,13 @@
 
 import streamlit as st
-import requests
 from streamlit_lottie import st_lottie
 import firebase_admin
 from firebase_admin import credentials
-from firebase_admin import db
-import os
-import pandas as pd
-from datetime import datetime, timezone
-import altair as alt
-import time
-from PIL import Image
 import coffee_flow_rate_doc
 import coffee
 import art
 import coffee_flow_rate_doc
 import tm
-import tensorflow as tf
 
 
 
