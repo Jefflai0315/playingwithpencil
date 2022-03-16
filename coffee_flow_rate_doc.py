@@ -144,7 +144,7 @@ def app():
     with st.expander("check_status() function"):
         st.code(code4,"C")
 
-    st.markdown('The Full code can be found on my [github repository](http://www.google.com) or Download by clicking the button!')
+    st.markdown('The Full code can be found on my [github repository](https://github.com/Jefflai0315/playingwithpencil/blob/main/assets/coffee_flow_ratetest.ino) or Download by clicking the button!')
     with open('https://github.com/Jefflai0315/playingwithpencil/blob/main/assets/coffee_flow_ratetest.ino', 'rb') as f:
       st.download_button('Download Arduino code', f, file_name='coffee_flowrate.ino')
 
