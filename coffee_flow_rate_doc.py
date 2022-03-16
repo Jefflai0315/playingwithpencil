@@ -145,11 +145,11 @@ def app():
         st.code(code4,"C")
 
     st.markdown('The Full code can be found on my [github repository](http://www.google.com) or Download by clicking the button!')
-    with open('assets\coffee_flow_ratetest.ino', 'rb') as f:
+    with open('https://github.com/Jefflai0315/playingwithpencil/blob/main/assets/coffee_flow_ratetest.ino', 'rb') as f:
       st.download_button('Download Arduino code', f, file_name='coffee_flowrate.ino')
 
     st.markdown('**Additional:** You will also need to calibrate the loadcell/HX711. Just download the file below, upload to your arduino, open up the serial monitor and follow the steps.')
-    with open('assets\HX711_Calibration_no_eeprom.ino', 'rb') as f:
+    with open('https://github.com/Jefflai0315/playingwithpencil/blob/main/assets/HX711_Calibration_no_eeprom.ino', 'rb') as f:
       st.download_button('Download Calibration code', f, file_name='HX711_Calibration_no-_eeprom.ino')
 
     st.markdown('''---''')
