@@ -1,3 +1,4 @@
+from turtle import width
 import streamlit as st
 from PIL import Image
 from assets import code_text
@@ -10,10 +11,12 @@ def app():
     
     image0 = Image.open("assets/images/espresso_line_chart.png")
     image00 = Image.open("assets/images/coffee.jpg")
+    image000 = Image.open("assets/images/circuit.jpg")
     with col1:
-      st.image(image0,caption='Sneak peak into the result 👀',width=500)
+      st.image(image000,caption='Circuit',width=500)
     with col2:
       st.image(image00,caption='Making espresso',width=135)
+    st.image(image000,caption='Sneak peak into the result 👀',width=700)
     st.markdown('''---''')
 
     st.header('Things used in this project')
