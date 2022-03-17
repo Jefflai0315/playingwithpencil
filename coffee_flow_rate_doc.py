@@ -13,9 +13,9 @@ def app():
     image00 = Image.open("assets/images/coffee.jpg")
     image000 = Image.open("assets/images/circuit.jpg")
     with col1:
-      st.image(image000,caption='Circuit',width=500)
+      st.image(image000,caption='Circuit',width=400)
     with col2:
-      st.image(image00,caption='Making espresso',width=135)
+      st.image(image00,caption='Making espresso',width=235)
     st.image(image0,caption='Sneak peak into the result 👀',width=700)
     st.markdown('''---''')
 
