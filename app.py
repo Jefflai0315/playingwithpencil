@@ -25,7 +25,7 @@ def main():
             st.session_state[myKey] = False
 
         if st.session_state[myKey]:
-            if st.button('Back'):
+            if st.button('Coffee Profilling page'):
                 st.session_state[myKey] = False
                 st.experimental_rerun()
             coffee_flow_rate_doc.app()

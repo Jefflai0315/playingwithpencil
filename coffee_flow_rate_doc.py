@@ -5,7 +5,7 @@ from assets import code_text
 
 def app():
     st.header('Espresso Flow Profiling with Arduino MKR WIFI 1010 ☕')
-    st.markdown('**This tutorial will illustrate the working of an loadcell and servo, as well as remotely controlling servo visuallising data via Streamlit.**')
+    st.markdown('**This tutorial will illustrate the working of an loadcell and servo, as well as remotely controlling servo visuallising data via [my Streamlit app](https://playingwithpencil.herokuapp.com/).**')
     col1,col2 = st.columns([3,1])
     
     image0 = Image.open("assets/images/espresso_line_chart.png")
@@ -36,16 +36,16 @@ def app():
     st.markdown('**What is espresso flow profilling and why does it matters?**')
 
     st.markdown(''' “Flow profiling” is about controling the flow rate of water going through the machine’s boiler and the puck of coffee.
-     The quality of an espresso shot depends on 3 things: coffee grind size, water to coffee ratio and time.
+     The quality of an espresso shot depends on 3 things: coffee grind size, coffee to water ratio and time.
      Although the espresso machine I have at home can dispense water for a preset amount of time, 
-     I wouldn't trust the dispensing as every pull of espresso can **never be the same**.  (e.g. different coffee with same grind size setting and same amount of coffee can take different time to get the correct coffee to water ratio ). ''')
+     I wouldn't trust the dispensing as every pull of espresso can **never be the same**.  (e.g. different coffee type with same grind size setting and same amount of coffee can take different time to get the correct coffee to water ratio ). ''')
     
     st.markdown('To tackle that, I used to dispense the water manually. That is to hold down the dispense button until reaching disired (espresso) weight.')
-    st.markdown('It is a **pain point** as I am not being able to focus on studying the coffee flow profiling. Hence I think it is worth the effort to use microcontroller to help me automate the process abit, so that I can save money from buying a premiere espresso machine that does the same thing.')
+    st.markdown('It is a **pain point** as I am not able to focus on studying the coffee flow profiling. Hence I think it is worth the effort to use microcontroller to help me automate the process abit, so that I can save money from buying a premiere espresso machine that does the same thing.')
     st.markdown('My _**first goal**_ 🏁  is to hire a mechanism that help me hold down the button until a desired weight is obtained. This mechanism requires 3 things:')
     
     st.markdown(">>1. **Servo motor** secured right above the dispensing button that will hold down the button by instructing servo to turn 90 degree anticlockwise ")
-    st.markdown(">> 2. **Load cell and HX711** that actively tracks the weight of the espresso liquid dispensed. Once reached desired weight, it will instruct servo to return to original position")
+    st.markdown(">> 2. **Load cell and HX711** that actively tracks the weight of the espresso liquid dispensed. Once reached desired weight, the servo to return to original position via signals from arduino")
     st.markdown(">> 3. **LEDs**. green led to show servo is holding down the button, while red led to show it returns to its original position")
     
     col3,col4,col5 = st.columns(3)
@@ -61,8 +61,8 @@ def app():
       image3= Image.open("assets/images/led.jpg")
       st.image(image3,caption='3. visual cues',width=200)
 
-    st.markdown('My _**second goal**_ 🏁 is to use Streamlit to display my espresso flow profilling data **and** control the state of my servo. If the state is "on", weight data will be send to firebase, else it will be stuck in a loop (can see my code)''')
-    st.markdown("_Press 'Back button' at the top of the page to see the data visualisation. you can also watch the video at the end to see how it works!_")
+    st.markdown('My _**second goal**_ 🏁 is to use Streamlit to display my espresso flow profilling data **and** control the state of my servo. If the state is "on", the weight data will be send to firebase, else it will be stuck in a loop (can see my code)''')
+    st.markdown("_Press 'Coffee Profilling page' button at the top of the page to see the data visualisation. you can also watch the video at the end to see how it works!_")
     st.markdown("""---""")
 
     st.markdown("""## Step 1: Setup the Hardware""")
@@ -118,7 +118,7 @@ def app():
     - **"Firebase_Arduino_WiFiNINA.h"** which is a Google Firebase Realtime Database Arduino Client Library for Arduino MKR WiFi 1010
     - **"arduino_secrets.h"** is where you keep the confidentials safely and excluding them from the main sketch file ''')
     
-    st.markdown("""**Note:** If library not pre-install, you can search it under Tool > Manage libraries > _search for the library_""")
+    st.markdown("""**Note:** If library not pre-installed, you can search it under Tool > Manage libraries > _search for the library_""")
 
     st.markdown("""
     **Important:** In order to send and receive data from a database in real-time in Firebase, we have to setup our firebase first.
@@ -144,7 +144,7 @@ def app():
     with st.expander("check_status() function"):
         st.code(code4,"C")
 
-    st.markdown('The Full code can be found on my [github repository](https://github.com/Jefflai0315/playingwithpencil/blob/main/assets/coffee_flow_ratetest.ino) or Download by clicking the button!')
+    st.markdown('The Full code can be found on my [github repository](https://github.com/Jefflai0315/playingwithpencil/blob/main/assets/coffee_flow_ratetest.ino) \n**or** Download by clicking the button!')
     with open('assets/coffee_flow_ratetest.ino', 'rb') as f1:
       st.download_button('Download Arduino code', f1, file_name='coffee_flowrate.ino')
 
@@ -169,11 +169,11 @@ def app():
     ##### What is not shown
     - implementation of Streamlit code
     - deployment of Streamlit app on Heroku
-    - how to visuallise my firebase espresso flow profilling data on Steamlit (Just press the Back button on top to see!)
+    - how to visuallise my firebase espresso flow profilling data on Steamlit (Just press the Coffee Profilling page button on top to see!)
      ''')
 
     st.markdown('''
-    Streamlit is itself a vast topic to cover, but I can share with some of the resources that are related.
+    Streamlit is itself a vast topic to cover, but I can share some links that are related.
     >>[my github repository of Steamlit code](https://github.com/Jefflai0315/playingwithpencil)
 
     >>[deploy Streamlit to Heroku](https://medium.com/analytics-vidhya/how-to-deploy-a-streamlit-app-with-heroku-5f76a809ec2e)
@@ -193,9 +193,9 @@ def app():
     st.markdown("""
     ##### Restropective:
     
-    1. Since the button is only found on my Streamlit app now, it can be incovinient if I do now have any devices with me. It will be good if I can have a physical button beside the machine to change the state of the machine.
-    2. The electrical components and wirings are exposed and placed close to a liquid dispenser's boiler. I will need to alter the length of the wires such that I can keep the electrical components away/ at the side or top of the espresso machine. It will be nice if i can compact all the part into a small module.
-    3. the servo arm is not ideal to ensure proper contact with the button. Besides, the current rotating angle / servo position should be reconsider as the motion is promp to misalignment.
+    1. Since the button is only found on my Streamlit app now, it can be incovenient if I do not have any devices with me. It will be good if I can have a physical button beside the machine to change the state of the machine.
+    2. The electrical components and wirings are exposed and placed close to a liquid dispenser's boiler. I will need to alter the length of the wires such that I can keep the electrical components away/ at the side or top of the espresso machine. It will be nice if i can compact all the parts into a small module.
+    3. The servo arm is not ideal to ensure proper contact with the button. Besides, the current rotating angle / servo position should be reconsider as the motion is prompt to misalignment.
     """)
 
 

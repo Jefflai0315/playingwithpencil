@@ -8,7 +8,7 @@ lottie_art = requests.get('https://assets4.lottiefiles.com/private_files/lf30_hq
 def app():
     st_lottie(lottie_art, speed=1, height=200, key="Art")
     st.subheader('GM GM, here are show of my recent artwork!')
-    st.markdown("I only do graphic pencil portrait at the moment, nice **_aren't_ they?**")
+    st.markdown("I only do graphic pencil portrait at the moment, **_aren't_ they nice?**")
     image1 = Image.open('assets/images/photo.jpg')
     st.image(image1,caption='Taeyeon',width=600)
     image2= Image.open('assets/images/photo1.jpg')
