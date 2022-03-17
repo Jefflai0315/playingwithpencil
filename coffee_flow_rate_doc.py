@@ -154,7 +154,7 @@ def app():
 
     st.markdown('''---''')
     st.subheader('Last but not least: Demonstration')
-    video_file = open('assets\images\coffee_flowrate.mp4', 'rb')
+    video_file = open('assets/images/coffee_flowrate.mp4', 'rb')
     video_bytes = video_file.read()
 
     st.video(video_bytes)
