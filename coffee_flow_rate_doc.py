@@ -145,7 +145,7 @@ def app():
         st.code(code4,"C")
 
     st.markdown('The Full code can be found on my [github repository](https://github.com/Jefflai0315/playingwithpencil/blob/main/assets/coffee_flow_ratetest.ino) or Download by clicking the button!')
-    with open('https://github.com/Jefflai0315/playingwithpencil/blob/main/assets/coffee_flow_ratetest.ino', 'rb') as f:
+    with open('assets/images/arduino_coffee_weighing_flowrate_project.png', 'rb') as f:
       st.download_button('Download Arduino code', f, file_name='coffee_flowrate.ino')
 
     st.markdown('**Additional:** You will also need to calibrate the loadcell/HX711. Just download the file below, upload to your arduino, open up the serial monitor and follow the steps.')
