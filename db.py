@@ -18,18 +18,18 @@ SHEET_NAME = "Database"
 GSHEET_URL = f"https://docs.google.com/spreadsheets/d/{SPREADSHEET_ID}"
 
 
-# service_account_info = json.load(open('sheet_cred.json'))
+service_account_info = json.load(open('google-credentials.json'))
 #for production
-service_account_info = os.environ.get('GOOGLE_APPLICATION_CREDENTIALS')
+# service_account_info = os.environ.get('GOOGLE_APPLICATION_CREDENTIALS')
 
-if service_account_info == None:
-    print('\n\nResorted to local JSON file.\n\n')
-    with open('google-credentials.json') as json_file:
-        service_account_info = json.load(json_file)
+# if service_account_info == None:
+#     print('\n\nResorted to local JSON file.\n\n')
+#     with open('google-credentials.json') as json_file:
+#         service_account_info = json.load(json_file)
 
-else:
-    print(service_account_info)
-    service_account_info = json.loads(service_account_info)
+# else:
+#     print(service_account_info)
+#     service_account_info = json.loads(service_account_info)
 
 
 # def sai():
