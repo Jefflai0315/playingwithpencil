@@ -71,13 +71,13 @@ if __name__ == "__main__":
             })
         except:
             # For PROD
-            cred = json.loads({
+            cred = {
             "type": "service_account",
             "project_id": "product-design-f47db",
             "private_key": os.environ.get('private_key').replace('\\n', '\n'),
             "client_email": os.environ.get("client_email"),
-            "token_uri": "https://oauth2.googleapis.com/token",
-            })
+            "token_uri": "https://oauth2.googleapis.com/token"
+            }
 
             print(cred)
             
