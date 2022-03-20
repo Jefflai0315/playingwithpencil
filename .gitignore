@@ -15,3 +15,4 @@ venv.bak/
 secrets.toml
 
 sheet_cred.json
+cred.json

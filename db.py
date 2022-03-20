@@ -21,10 +21,14 @@ GSHEET_URL = f"https://docs.google.com/spreadsheets/d/{SPREADSHEET_ID}"
 # service_account_info = json.load(open('sheet_cred.json'))
 #for production
 service_account_info = os.environ.get('gcp-service-account')
-st.write(service_account_info)
-print(service_account_info)
-if service_account_info:
-    print(service_account_info)
+
+if service_account_info == None:
+    print('\n\nResorted to local JSON file.\n\n')
+    with open('sheet_cred.json') as json_file:
+        service_account_info = json.load(json_file)
+
+else:
+    service_account_info = json.loads(service_account_info)
 
 
 # def sai():
