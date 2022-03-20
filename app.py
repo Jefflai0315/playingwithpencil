@@ -66,18 +66,19 @@ if __name__ == "__main__":
         try:
             # For LOCAL
             cred = credentials.Certificate('cred.json')
+            print(cred)
             default_app = firebase_admin.initialize_app(cred, {
                 'databaseURL':"https://product-design-f47db-default-rtdb.asia-southeast1.firebasedatabase.app" 
             })
         except:
             # For PROD
-            cred = {
+            cred = credentials.Certificate({
             "type": "service_account",
             "project_id": "product-design-f47db",
             "private_key": os.environ.get('private_key').replace('\\n', '\n'),
             "client_email": os.environ.get("client_email"),
             "token_uri": "https://oauth2.googleapis.com/token"
-            }
+            })
 
             print(cred)
             
