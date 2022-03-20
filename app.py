@@ -78,6 +78,8 @@ if __name__ == "__main__":
             "client_email": os.environ.get("client_email"),
             "token_uri": "https://oauth2.googleapis.com/token",
             })
+
+            print(cred)
             
             default_app = firebase_admin.initialize_app(cred, {
                 'databaseURL':"https://product-design-f47db-default-rtdb.asia-southeast1.firebasedatabase.app" 
