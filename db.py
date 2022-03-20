@@ -28,6 +28,7 @@ if service_account_info == None:
         service_account_info = json.load(json_file)
 
 else:
+    print(service_account_info)
     service_account_info = json.loads(service_account_info)
 
 
