@@ -17,7 +17,7 @@ SPREADSHEET_ID = "141zPqEXVdyaxz2XBptZTJem4tRgW9iLYmlu1qavx5nc"
 SHEET_NAME = "Database"
 GSHEET_URL = f"https://docs.google.com/spreadsheets/d/{SPREADSHEET_ID}"
 
-
+# google-credentials.json on Heroku's file system
 service_account_info = json.load(open('google-credentials.json'))
 #for production
 # service_account_info = os.environ.get('GOOGLE_APPLICATION_CREDENTIALS')
