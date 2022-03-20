@@ -20,7 +20,7 @@ GSHEET_URL = f"https://docs.google.com/spreadsheets/d/{SPREADSHEET_ID}"
 
 # service_account_info = json.load(open('sheet_cred.json'))
 #for production
-service_account_info = os.environ.get('gcp-service-account')
+service_account_info = os.environ.get('GOOGLE_APPLICATION_CREDENTIALS')
 
 if service_account_info == None:
     print('\n\nResorted to local JSON file.\n\n')
