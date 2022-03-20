@@ -75,8 +75,8 @@ if __name__ == "__main__":
             cred = credentials.Certificate({
             "type": "service_account",
             "project_id": "product-design-f47db",
-            "private_key": os.environ.get('private_key').replace('\\n', '\n'),
-            "client_email": os.environ.get("client_email"),
+            "private_key": os.environ.get('PRIVATE_KEY').replace('\\n', '\n'),
+            "client_email": os.environ.get("CLIENT_EMAIL"),
             "token_uri": "https://oauth2.googleapis.com/token"
             })
 
