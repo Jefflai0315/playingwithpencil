@@ -24,7 +24,7 @@ service_account_info = os.environ.get('GOOGLE_APPLICATION_CREDENTIALS')
 
 if service_account_info == None:
     print('\n\nResorted to local JSON file.\n\n')
-    with open('sheet_cred.json') as json_file:
+    with open('google-credentials.json') as json_file:
         service_account_info = json.load(json_file)
 
 else:
