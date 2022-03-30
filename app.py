@@ -9,11 +9,17 @@ import art
 import coffee_flow_rate_doc
 import os
 import json
+from dotenv import load_dotenv
+load_dotenv()
+
 # import tm  -- tm not working yet 
 
+st.write(os.getenv('KEY'))
 
-
-st.set_page_config(page_icon="✏️", page_title="pwp")
+try:
+    st.set_page_config(page_icon="✏️", page_title="pwp")
+except:
+    pass
 
 # model, live, data, size = tm.init_face_reg()
 
@@ -72,18 +78,7 @@ if __name__ == "__main__":
             })
         except:
             # For PROD
-            print({
-            "type": "service_account",
-            "project_id": "product-design-f47db",
-            "private_key_id": os.environ.get('PRIVATE_KEY_ID'),
-            "private_key": os.environ.get('PRIVATE_KEY').replace('\\n', '\n'),
-            "client_email": os.environ.get("CLIENT_EMAIL"),
-            "client_id": os.environ.get('CLIENT_ID'),
-            "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-            "token_uri": "https://oauth2.googleapis.com/token",
-            "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-            "client_x509_cert_url": os.environ.get('CLIENT_CERT_URL')
-            })
+            
             cred = credentials.Certificate({
             "type": "service_account",
             "project_id": "product-design-f47db",
@@ -97,7 +92,7 @@ if __name__ == "__main__":
             "client_x509_cert_url": os.environ.get('CLIENT_CERT_URL')
             })
 
-            print(cred)
+        
             
             default_app = firebase_admin.initialize_app(cred, {
                 'databaseURL':"https://product-design-f47db-default-rtdb.asia-southeast1.firebasedatabase.app" 

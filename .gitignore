@@ -17,3 +17,5 @@ secrets.toml
 sheet_cred.json
 cred.json
 google-credentials.json
+
+.env
