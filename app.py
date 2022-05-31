@@ -9,6 +9,8 @@ import art
 import coffee_flow_rate_doc
 import os
 import json
+from dotenv import load_dotenv
+load_dotenv()
 
 
 # import tm  -- tm not working yet 
