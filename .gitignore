@@ -1,6 +1,9 @@
 __pycache__/
 
 
+tm.py
+gs.py
+
 # Environments
 .env
 .venv
@@ -19,3 +22,11 @@ cred.json
 google-credentials.json
 
 .env
+
+
+
+
+
+
+
+
