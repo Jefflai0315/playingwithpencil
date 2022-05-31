@@ -20,10 +20,11 @@ SHEET_NAME = "Database"
 GSHEET_URL = f"https://docs.google.com/spreadsheets/d/{SPREADSHEET_ID}"
 
 # google-credentials.json on Heroku's file system
-service_account_info = json.load(open('google-credentials.json'))
+try:
+    service_account_info = json.load(open('google-credentials.json'))
 #for production
-# service_account_info = os.environ.get('GOOGLE_APPLICATION_CREDENTIALS')
-
+except:
+    service_account_info = os.environ.get('GOOGLE_APPLICATION_CREDENTIALS')
 # if service_account_info == None:
 #     print('\n\nResorted to local JSON file.\n\n')
 #     with open('google-credentials.json') as json_file:
